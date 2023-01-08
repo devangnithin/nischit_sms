@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `students`
+-- Database: `accelerometerDatas`
 --
 
 -- --------------------------------------------------------
@@ -66,14 +66,14 @@ INSERT INTO `department` (`cid`, `branch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student`
+-- Table structure for table `accelerometerData`
 --
 
-CREATE TABLE `student` (
+CREATE TABLE `accelerometerData` (
   `id` int(11) NOT NULL,
-  `XAxis` varchar(20) NOT NULL,
-  `sname` varchar(50) NOT NULL,
-  `sem` int(20) NOT NULL,
+  `XAxis` float NOT NULL,
+  `YAxis` float NOT NULL,
+  `ZAxis` float NOT NULL,
   `gender` varchar(50) NOT NULL,
   `branch` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -82,18 +82,18 @@ CREATE TABLE `student` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Triggers `student`
+-- Triggers `accelerometerData`
 --
 DELIMITER $$
-CREATE TRIGGER `DELETE` BEFORE DELETE ON `student` FOR EACH ROW INSERT INTO trig VALUES(null,OLD.XAxis,'STUDENT DELETED',NOW())
+CREATE TRIGGER `DELETE` BEFORE DELETE ON `accelerometerData` FOR EACH ROW INSERT INTO trig VALUES(null,OLD.XAxis,'AccelerometerData DELETED',NOW())
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `Insert` AFTER INSERT ON `student` FOR EACH ROW INSERT INTO trig VALUES(null,NEW.XAxis,'STUDENT INSERTED',NOW())
+CREATE TRIGGER `Insert` AFTER INSERT ON `accelerometerData` FOR EACH ROW INSERT INTO trig VALUES(null,NEW.XAxis,'AccelerometerData INSERTED',NOW())
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `UPDATE` AFTER UPDATE ON `student` FOR EACH ROW INSERT INTO trig VALUES(null,NEW.XAxis,'STUDENT UPDATED',NOW())
+CREATE TRIGGER `UPDATE` AFTER UPDATE ON `accelerometerData` FOR EACH ROW INSERT INTO trig VALUES(null,NEW.XAxis,'AccelerometerData UPDATED',NOW())
 $$
 DELIMITER ;
 
@@ -156,7 +156,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password`) VALUES
-(4, 'anees', 'anees@gmail.com', 'pbkdf2:sha256:150000$1CSLss89$ef995dfc48121768b2070bfbe7a568871cd56fac85ac7c95a1e645c8806146e9');
+(4, 'devangnithin', 'devangnithin@gmail.com', 'pbkdf2:sha256:260000$ILaEVx41Q4jJw7EF$242a8f67c5a01c65b8675886eca540f1afa02356ae67dcd8bf92f8096196cf98');
 
 --
 -- Indexes for dumped tables
@@ -175,9 +175,9 @@ ALTER TABLE `department`
   ADD PRIMARY KEY (`cid`);
 
 --
--- Indexes for table `student`
+-- Indexes for table `accelerometerData`
 --
-ALTER TABLE `student`
+ALTER TABLE `accelerometerData`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -215,9 +215,9 @@ ALTER TABLE `department`
   MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `student`
+-- AUTO_INCREMENT for table `accelerometerData`
 --
-ALTER TABLE `student`
+ALTER TABLE `accelerometerData`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --

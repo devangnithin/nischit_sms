@@ -23,7 +23,7 @@ def load_user(user_id):
 
 
 # app.config['SQLALCHEMY_DATABASE_URL']='mysql://username:password@localhost/databas_table_name'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/students'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/accelerometer'
 db=SQLAlchemy(app)
 
 # here we will create db models that is tables
@@ -58,11 +58,11 @@ class User(UserMixin,db.Model):
 
 
 
-class Student(db.Model):
+class AccelerometerData(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     XAxis=db.Column(db.String(50))
-    sname=db.Column(db.String(50))
-    sem=db.Column(db.Integer)
+    YAxis=db.Column(db.String(50))
+    ZAxis=db.Column(db.String(50))
     gender=db.Column(db.String(50))
     branch=db.Column(db.String(50))
     email=db.Column(db.String(50))
@@ -76,7 +76,7 @@ def index():
 
 @app.route('/accelerometerdetails')
 def accelerometerdetails():
-    query=db.engine.execute(f"SELECT * FROM `student`") 
+    query=db.engine.execute(f"SELECT * FROM `accelerometerData`")
     return render_template('accelerometerdetails.html',query=query)
 
 @app.route('/triggers')
@@ -100,7 +100,7 @@ def department():
 
 @app.route('/addattendance',methods=['POST','GET'])
 def addattendance():
-    query=db.engine.execute(f"SELECT * FROM `student`") 
+    query=db.engine.execute(f"SELECT * FROM `accelerometerData`")
     if request.method=="POST":
         XAxis=request.form.get('XAxis')
         attend=request.form.get('attend')
@@ -117,7 +117,7 @@ def addattendance():
 def search():
     if request.method=="POST":
         XAxis=request.form.get('x')
-        bio=Student.query.filter_by(XAxis=XAxis).first()
+        bio=AccelerometerData.query.filter_by(XAxis=XAxis).first()
         attend=Attendence.query.filter_by(XAxis=XAxis).first()
         return render_template('search.html',bio=bio,attend=attend)
         
@@ -126,7 +126,7 @@ def search():
 @app.route("/delete/<string:id>",methods=['POST','GET'])
 @login_required
 def delete(id):
-    db.engine.execute(f"DELETE FROM `student` WHERE `student`.`id`={id}")
+    db.engine.execute(f"DELETE FROM ` 	accelerometerdata` WHERE `student`.`id`={id}")
     flash("Slot Deleted Successful","danger")
     return redirect('/accelerometerdetails')
 
@@ -135,17 +135,17 @@ def delete(id):
 @login_required
 def edit(id):
     dept=db.engine.execute("SELECT * FROM `department`")
-    posts=Student.query.filter_by(id=id).first()
+    posts=AccelerometerData.query.filter_by(id=id).first()
     if request.method=="POST":
         XAxis=request.form.get('XAxis')
-        sname=request.form.get('sname')
-        sem=request.form.get('sem')
+        YAxis=request.form.get('YAxis')
+        ZAxis=request.form.get('ZAxis')
         gender=request.form.get('gender')
         branch=request.form.get('branch')
         email=request.form.get('email')
         num=request.form.get('num')
         address=request.form.get('address')
-        query=db.engine.execute(f"UPDATE `student` SET `XAxis`='{XAxis}',`sname`='{sname}',`sem`='{sem}',`gender`='{gender}',`branch`='{branch}',`email`='{email}',`number`='{num}',`address`='{address}'")
+        query=db.engine.execute(f"UPDATE `accelerometerdata` SET `XAxis`='{XAxis}',`YAxis`='{YAxis}',`ZAxis`='{ZAxis}',`gender`='{gender}',`branch`='{branch}',`email`='{email}',`number`='{num}',`address`='{address}'")
         flash("Slot is Updates","success")
         return redirect('/accelerometerdetails')
     
@@ -209,14 +209,14 @@ def addaccelerometer():
     dept=db.engine.execute("SELECT * FROM `department`")
     if request.method=="POST":
         XAxis=request.form.get('XAxis')
-        sname=request.form.get('sname')
-        sem=request.form.get('sem')
+        YAxis=request.form.get('YAxis')
+        ZAxis=request.form.get('ZAxis')
         gender=request.form.get('gender')
         branch=request.form.get('branch')
         email=request.form.get('email')
         num=request.form.get('num')
         address=request.form.get('address')
-        query=db.engine.execute(f"INSERT INTO `student` (`XAxis`,`sname`,`sem`,`gender`,`branch`,`email`,`number`,`address`) VALUES ('{XAxis}','{sname}','{sem}','{gender}','{branch}','{email}','{num}','{address}')")
+        query=db.engine.execute(f"INSERT INTO `accelerometerdata` (`XAxis`,`YAxis`,`ZAxis`,`gender`,`branch`,`email`,`number`,`address`) VALUES ('{XAxis}','{YAxis}','{ZAxis}','{gender}','{branch}','{email}','{num}','{address}')")
     
 
         flash("Booking Confirmed","info")
