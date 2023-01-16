@@ -47,44 +47,20 @@ Add AccelerometerData
 <input type="text" class="form-control" name="ZAxis" id="ZAxis">
 </div>
 <br>
-<div class="form-group">                          
-<select  class="form-control" id="gender" name="gender"  required>
-        <option selected>Select Gender</option>
-    
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-       
-      </select>
+<div class="form-group">
+    <label for="latitude">Latitude</label>
+    <input type="text" class="form-control" name="latitude" id="latitude">
  </div>
 <br>
 
-<div class="form-group">                          
-<select class="form-control" id="branch" name="branch"  required>
-        <option selected>Select Branch</option>
-        {% for d in dept  %}
-        <option value="{{d.branch}}">{{d.branch}}</option>
-        {% endfor %}
-      </select>
+<div class="form-group">
+    <label for="longitude">Longitude</label>
+    <input type="text" class="form-control" name="longitude" id="longitude">
  </div>
 <br>
-<div class="form-group">
-
-<label for="email">Email</label>
-<input type="email" class="form-control" name="email" id="email">
-</div>
 <br>
-<div class="form-group">
-<label for="num">Phone Number</label>
-<input type="number" class="form-control" name="num" id="num">
-</div>
 <br>
 
-<div class="form-group">
-<label for="address">Address</label>
-<textarea class="form-control" name="address" id="address"></textarea>
-</div>
-<br>
-  
   <button type="submit" class="btn btn-danger btn-sm btn-block">Add Record</button>
 </form>
 <br>

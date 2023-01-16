@@ -26,15 +26,9 @@ def load_user(user_id):
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/accelerometer'
 db=SQLAlchemy(app)
 
-# here we will create db models that is tables
-class Test(db.Model):
-    id=db.Column(db.Integer,primary_key=True)
-    name=db.Column(db.String(100))
-    email=db.Column(db.String(100))
-
 class Department(db.Model):
     cid=db.Column(db.Integer,primary_key=True)
-    branch=db.Column(db.String(100))
+    longitude=db.Column(db.String(100))
 
 class Attendence(db.Model):
     aid=db.Column(db.Integer,primary_key=True)
@@ -63,15 +57,12 @@ class AccelerometerData(db.Model):
     XAxis=db.Column(db.String(50))
     YAxis=db.Column(db.String(50))
     ZAxis=db.Column(db.String(50))
-    gender=db.Column(db.String(50))
-    branch=db.Column(db.String(50))
-    email=db.Column(db.String(50))
-    number=db.Column(db.String(12))
-    address=db.Column(db.String(100))
-    
+    latitude=db.Column(db.String(50))
+    longitude=db.Column(db.String(50))
+
 
 @app.route('/')
-def index(): 
+def index():
     return render_template('index.html')
 
 @app.route('/accelerometerdetails')
@@ -81,18 +72,18 @@ def accelerometerdetails():
 
 @app.route('/triggers')
 def triggers():
-    query=db.engine.execute(f"SELECT * FROM `trig`") 
+    query=db.engine.execute(f"SELECT * FROM `trig`")
     return render_template('triggers.html',query=query)
 
 @app.route('/department',methods=['POST','GET'])
 def department():
     if request.method=="POST":
         dept=request.form.get('dept')
-        query=Department.query.filter_by(branch=dept).first()
+        query=Department.query.filter_by(longitude=dept).first()
         if query:
             flash("Department Already Exist","warning")
             return redirect('/department')
-        dep=Department(branch=dept)
+        dep=Department(longitude=dept)
         db.session.add(dep)
         db.session.commit()
         flash("Department Addes","success")
@@ -110,7 +101,7 @@ def addattendance():
         db.session.commit()
         flash("Attendance added","warning")
 
-        
+
     return render_template('attendance.html',query=query)
 
 @app.route('/search',methods=['POST','GET'])
@@ -120,7 +111,7 @@ def search():
         bio=AccelerometerData.query.filter_by(XAxis=XAxis).first()
         attend=Attendence.query.filter_by(XAxis=XAxis).first()
         return render_template('search.html',bio=bio,attend=attend)
-        
+
     return render_template('search.html')
 
 @app.route("/delete/<string:id>",methods=['POST','GET'])
@@ -140,15 +131,12 @@ def edit(id):
         XAxis=request.form.get('XAxis')
         YAxis=request.form.get('YAxis')
         ZAxis=request.form.get('ZAxis')
-        gender=request.form.get('gender')
-        branch=request.form.get('branch')
-        email=request.form.get('email')
-        num=request.form.get('num')
-        address=request.form.get('address')
-        query=db.engine.execute(f"UPDATE `accelerometerdata` SET `XAxis`='{XAxis}',`YAxis`='{YAxis}',`ZAxis`='{ZAxis}',`gender`='{gender}',`branch`='{branch}',`email`='{email}',`number`='{num}',`address`='{address}'")
+        latitude=request.form.get('latitude')
+        longitude=request.form.get('longitude')
+        query=db.engine.execute(f"UPDATE `accelerometerdata` SET `XAxis`='{XAxis}',`YAxis`='{YAxis}',`ZAxis`='{ZAxis}',`latitude`='{latitude}',`longitude`='{longitude}''")
         flash("Slot is Updates","success")
         return redirect('/accelerometerdetails')
-    
+
     return render_template('edit.html',posts=posts,dept=dept)
 
 
@@ -173,7 +161,7 @@ def signup():
         flash("Signup Succes Please Login","success")
         return render_template('login.html')
 
-          
+
 
     return render_template('signup.html')
 
@@ -190,7 +178,7 @@ def login():
             return redirect(url_for('index'))
         else:
             flash("invalid credentials","danger")
-            return render_template('login.html')    
+            return render_template('login.html')
 
     return render_template('login.html')
 
@@ -211,12 +199,11 @@ def addaccelerometer():
         XAxis=request.form.get('XAxis')
         YAxis=request.form.get('YAxis')
         ZAxis=request.form.get('ZAxis')
-        gender=request.form.get('gender')
-        branch=request.form.get('branch')
+        latitude=request.form.get('latitude')
+        longitude=request.form.get('longitude')
         email=request.form.get('email')
         num=request.form.get('num')
-        address=request.form.get('address')
-        query=db.engine.execute(f"INSERT INTO `accelerometerdata` (`XAxis`,`YAxis`,`ZAxis`,`gender`,`branch`,`email`,`number`,`address`) VALUES ('{XAxis}','{YAxis}','{ZAxis}','{gender}','{branch}','{email}','{num}','{address}')")
+        query=db.engine.execute(f"INSERT INTO `accelerometerdata` (`XAxis`,`YAxis`,`ZAxis`,`latitude`,`longitude`) VALUES ('{XAxis}','{YAxis}','{ZAxis}','{latitude}','{longitude}')")
     
 
         flash("Booking Confirmed","info")
