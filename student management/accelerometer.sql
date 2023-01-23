@@ -27,18 +27,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `attendence`
 --
 
-CREATE TABLE `attendence` (
+CREATE TABLE `analytics` (
   `aid` int(11) NOT NULL,
   `XAxis` float NOT NULL,
-  `attendance` int(100) NOT NULL
+  `YAxis` float NOT NULL,
+  `ZAxis` float NOT NULL,
+  `name` float NOT NULL,
+  `value` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `attendence`
---
-
-INSERT INTO `attendence` (`aid`, `XAxis`, `attendance`) VALUES
-(6, '1ve17cs012', 98);
 
 -- --------------------------------------------------------
 

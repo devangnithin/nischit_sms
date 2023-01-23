@@ -30,10 +30,13 @@ class DataSource(db.Model):
     cid=db.Column(db.Integer,primary_key=True)
     source_name=db.Column(db.String(100))
 
-class Attendence(db.Model):
+class Analytics(db.Model):
     aid=db.Column(db.Integer,primary_key=True)
     XAxis=db.Column(db.String(100))
-    attendance=db.Column(db.Integer())
+    YAxis=db.Column(db.String(100))
+    ZAxis=db.Column(db.String(100))
+    name=db.Column(db.Integer())
+    value=db.Column(db.Integer())
 
 class Trig(db.Model):
     tid=db.Column(db.Integer,primary_key=True)
@@ -91,27 +94,30 @@ def dataSource():
         flash("DataSource Added","success")
     return render_template('datasource.html')
 
-@app.route('/addattendance',methods=['POST','GET'])
-def addattendance():
+@app.route('/addanalytics',methods=['POST','GET'])
+def addanalytics():
     query=db.engine.execute(f"SELECT * FROM `accelerometerData`")
     if request.method=="POST":
         XAxis=request.form.get('XAxis')
-        attend=request.form.get('attend')
-        print(attend,XAxis)
-        atte=Attendence(XAxis=XAxis,attendance=attend)
+        YAxis=request.form.get('YAxis')
+        ZAxis=request.form.get('ZAxis')
+        name=request.form.get('name')
+        value=request.form.get('value')
+        #print(name,XAxis)
+        atte=Analytics(XAxis=XAxis, YAxis=YAxis, ZAxis=ZAxis, name=name, value=value)
         db.session.add(atte)
         db.session.commit()
-        flash("Attendance added","warning")
+        flash("Analytics added","warning")
 
 
-    return render_template('attendance.html',query=query)
+    return render_template('analytics.html',query=query)
 
 @app.route('/search',methods=['POST','GET'])
 def search():
     if request.method=="POST":
         XAxis=request.form.get('x')
         bio=AccelerometerData.query.filter_by(XAxis=XAxis).first()
-        attend=Attendence.query.filter_by(XAxis=XAxis).first()
+        attend=Analytics.query.filter_by(XAxis=XAxis).first()
         return render_template('search.html',bio=bio,attend=attend)
 
     return render_template('search.html')
