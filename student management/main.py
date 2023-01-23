@@ -53,13 +53,14 @@ class User(UserMixin,db.Model):
 
 
 class AccelerometerData(db.Model):
+    __tablename__ = "accelerometerdata"
     id=db.Column(db.Integer,primary_key=True)
     XAxis=db.Column(db.String(50))
     YAxis=db.Column(db.String(50))
     ZAxis=db.Column(db.String(50))
     latitude=db.Column(db.String(50))
     longitude=db.Column(db.String(50))
-    data_source=db.Column(db.String(100))
+    source_name=db.Column(db.String(100))
 
 
 @app.route('/')
@@ -134,7 +135,8 @@ def edit(id):
         ZAxis=request.form.get('ZAxis')
         latitude=request.form.get('latitude')
         longitude=request.form.get('longitude')
-        query=db.engine.execute(f"UPDATE `accelerometerdata` SET `XAxis`='{XAxis}',`YAxis`='{YAxis}',`ZAxis`='{ZAxis}',`latitude`='{latitude}',`longitude`='{longitude}''")
+        sourceName=request.form.get('dataSource')
+        query=db.engine.execute(f"UPDATE `accelerometerdata` SET `XAxis`='{XAxis}',`YAxis`='{YAxis}',`ZAxis`='{ZAxis}',`latitude`='{latitude}',`longitude`='{longitude}', `source_name`='{sourceName}'")
         flash("Slot is Updates","success")
         return redirect('/accelerometerdetails')
 

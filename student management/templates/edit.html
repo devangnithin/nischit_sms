@@ -56,15 +56,25 @@
 <br>
 <div class="form-group">
     <label for="latitude">Latitude</label>
-    <input type="text" class="form-control" name="latitude" id="latitude">
+    <input type="text" class="form-control" name="latitude" id="latitude" value={{posts.latitude}}>
  </div>
 <br>
 
 <div class="form-group">
     <label for="longitude">Longitude</label>
-    <input type="text" class="form-control" name="longitude" id="longitude">
+    <input type="text" class="form-control" name="longitude" id="longitude" value={{posts.longitude}}>
  </div>
 <br>
+
+    <div class="form-group">
+        <select class="form-control" id="dataSource" name="dataSource" value={{posts.source_name}} required>
+            <option selected>Select Source</option>
+            {% for d in dept  %}
+                <option value="{{d.source_name}}">{{d.source_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+<br/>
 
   <button type="submit" class="btn btn-light btn-sm btn-block">Submit Record</button>
 </form>
