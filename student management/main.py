@@ -26,9 +26,9 @@ def load_user(user_id):
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/accelerometer'
 db=SQLAlchemy(app)
 
-class Department(db.Model):
+class DataSource(db.Model):
     cid=db.Column(db.Integer,primary_key=True)
-    longitude=db.Column(db.String(100))
+    source_name=db.Column(db.String(100))
 
 class Attendence(db.Model):
     aid=db.Column(db.Integer,primary_key=True)
@@ -59,6 +59,7 @@ class AccelerometerData(db.Model):
     ZAxis=db.Column(db.String(50))
     latitude=db.Column(db.String(50))
     longitude=db.Column(db.String(50))
+    data_source=db.Column(db.String(100))
 
 
 @app.route('/')
@@ -75,19 +76,19 @@ def triggers():
     query=db.engine.execute(f"SELECT * FROM `trig`")
     return render_template('triggers.html',query=query)
 
-@app.route('/department',methods=['POST','GET'])
-def department():
+@app.route('/dataSource',methods=['POST','GET'])
+def dataSource():
     if request.method=="POST":
         dept=request.form.get('dept')
-        query=Department.query.filter_by(longitude=dept).first()
+        query=DataSource.query.filter_by(source_name=dept).first()
         if query:
-            flash("Department Already Exist","warning")
-            return redirect('/department')
-        dep=Department(longitude=dept)
+            flash("DataSource Already Exist","warning")
+            return redirect('/dataSource')
+        dep=DataSource(source_name=dept)
         db.session.add(dep)
         db.session.commit()
-        flash("Department Addes","success")
-    return render_template('department.html')
+        flash("DataSource Added","success")
+    return render_template('datasource.html')
 
 @app.route('/addattendance',methods=['POST','GET'])
 def addattendance():
@@ -117,7 +118,7 @@ def search():
 @app.route("/delete/<string:id>",methods=['POST','GET'])
 @login_required
 def delete(id):
-    db.engine.execute(f"DELETE FROM ` 	accelerometerdata` WHERE `student`.`id`={id}")
+    db.engine.execute(f"DELETE FROM `accelerometerdata` WHERE `id`={id}")
     flash("Slot Deleted Successful","danger")
     return redirect('/accelerometerdetails')
 
@@ -125,7 +126,7 @@ def delete(id):
 @app.route("/edit/<string:id>",methods=['POST','GET'])
 @login_required
 def edit(id):
-    dept=db.engine.execute("SELECT * FROM `department`")
+    dept=db.engine.execute("SELECT * FROM `data_source`")
     posts=AccelerometerData.query.filter_by(id=id).first()
     if request.method=="POST":
         XAxis=request.form.get('XAxis')
@@ -194,19 +195,19 @@ def logout():
 @app.route('/addaccelerometer',methods=['POST','GET'])
 @login_required
 def addaccelerometer():
-    dept=db.engine.execute("SELECT * FROM `department`")
+    dept=db.engine.execute("SELECT * FROM `data_source`")
     if request.method=="POST":
         XAxis=request.form.get('XAxis')
         YAxis=request.form.get('YAxis')
         ZAxis=request.form.get('ZAxis')
         latitude=request.form.get('latitude')
         longitude=request.form.get('longitude')
-        email=request.form.get('email')
-        num=request.form.get('num')
-        query=db.engine.execute(f"INSERT INTO `accelerometerdata` (`XAxis`,`YAxis`,`ZAxis`,`latitude`,`longitude`) VALUES ('{XAxis}','{YAxis}','{ZAxis}','{latitude}','{longitude}')")
-    
+        sourceName=request.form.get('dataSource')
+        #num=request.form.get('num')
+        query=db.engine.execute(f"INSERT INTO `accelerometerdata` (`XAxis`,`YAxis`,`ZAxis`,`latitude`,`longitude`, `source_name`) VALUES ('{XAxis}','{YAxis}','{ZAxis}','{latitude}','{longitude}', '{sourceName}')")
 
-        flash("Booking Confirmed","info")
+
+        flash("Acceleration Data Added","info")
 
 
     return render_template('accelerometer.html',dept=dept)

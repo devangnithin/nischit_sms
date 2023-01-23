@@ -43,25 +43,25 @@ INSERT INTO `attendence` (`aid`, `XAxis`, `attendance`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `department`
+-- Table structure for table `data_source`
 --
 
-CREATE TABLE `department` (
+CREATE TABLE `data_source` (
   `cid` int(11) NOT NULL,
-  `longitude` float NOT NULL
+  `source_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `department`
+-- Dumping data for table `data_source`
 --
 
-INSERT INTO `department` (`cid`, `longitude`) VALUES
-(2, 'Information Science'),
-(3, 'Electronic and Communication'),
-(4, 'Electrical & Electronic'),
-(5, 'Civil '),
-(7, 'computer science'),
-(8, 'IOT');
+INSERT INTO `data_source` (`cid`, `source_name`) VALUES
+(2, 'Manual Web'),
+(3, 'Android'),
+(4, 'iPhone'),
+(5, 'Raspberry Pi '),
+(7, 'Other IOT'),
+(8, 'Others');
 
 -- --------------------------------------------------------
 
@@ -76,6 +76,7 @@ CREATE TABLE `accelerometerData` (
   `ZAxis` float NOT NULL,
   `latitude` float NOT NULL,
   `longitude` float NOT NULL,
+  `source_name` varchar(100) NOT NULL,
   `datetime` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -135,9 +136,9 @@ ALTER TABLE `attendence`
   ADD PRIMARY KEY (`aid`);
 
 --
--- Indexes for table `department`
+-- Indexes for table `data_source`
 --
-ALTER TABLE `department`
+ALTER TABLE `data_source`
   ADD PRIMARY KEY (`cid`);
 
 --
@@ -169,9 +170,9 @@ ALTER TABLE `attendence`
   MODIFY `aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `department`
+-- AUTO_INCREMENT for table `data_source`
 --
-ALTER TABLE `department`
+ALTER TABLE `data_source`
   MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --

@@ -59,6 +59,14 @@ Add AccelerometerData
  </div>
 <br>
 <br>
+    <div class="form-group">
+        <select class="form-control" id="dataSource" name="dataSource"  required>
+            <option selected>Select Source</option>
+            {% for d in dept  %}
+            <option value="{{d.source_name}}">{{d.source_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
 <br>
 
   <button type="submit" class="btn btn-danger btn-sm btn-block">Add Record</button>
